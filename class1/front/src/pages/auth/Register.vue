@@ -24,8 +24,8 @@ const handleRegister = async () => {
 			<label for="lgn-input-password">Password:</label>
 			<input type="text" id="lgn-input-password" />
 			<br />
-			<label for="lgn-input-password">Password(confirm):</label>
-			<input type="text" id="lgn-input-password" />
+			<label for="lgn-input-passwordConf">Password(confirm):</label>
+			<input type="text" id="lgn-input-passwordConf" />
 			<br />
 			<button @click="handleRegister">Register</button>
 		</div>
