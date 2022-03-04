@@ -5,7 +5,6 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Header: typeof import('./src/components/Header.vue')['default']
-    HeaderMenu: typeof import('./src/components/HeaderMenu.vue')['default']
   }
 }
 

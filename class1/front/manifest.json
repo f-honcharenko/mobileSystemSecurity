@@ -1,0 +1,42 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "name": "NotepadSecure",
+    "short_name": "NS",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "red",
+    "description": "app for Mobile System Securti classes.",
+    "icons": [{
+      "src": "public/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }, {
+      "src": "public/favicon.ico",
+      "sizes": "72x72",
+      "type": "image/x-icon"
+    }, {
+      "src": "public/favicon.ico",
+      "sizes": "96x96",
+      "type": "image/x-icon"
+    }, {
+      "src": "public/favicon.ico",
+      "sizes": "120x120",
+      "type": "image/x-icon"
+    }, {
+      "src": "public/favicon.ico",
+      "sizes": "144x144",
+      "type": "image/x-icon"
+    }, {
+      "src": "public/favicon.ico",
+      "sizes": "168x168",
+      "type": "image/x-icon"
+    }, {
+      "src": "public/favicon.ico",
+      "sizes": "180x180",
+      "type": "image/x-icon"
+    }, {
+      "src": "public/favicon.ico",
+      "sizes": "192x192",
+      "type": "image/x-icon"
+    }]
+  }

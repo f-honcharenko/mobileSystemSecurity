@@ -6,7 +6,7 @@ meta:
 import { ref } from "vue";
 import { onBeforeMount } from "@vue/runtime-core";
 
-const isLogged = ref(true);
+const isLogged = ref(false);
 
 const fetchUserData = async () => {
 	try {
