@@ -6,6 +6,19 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+
+  resolve: {
+    alias: [
+      {
+          find: '/~/',
+          replacement: `/src/assets/`,
+      },
+      {
+          find: '/@src/',
+          replacement: `/src/`,
+      },
+    ],
+  },
   plugins: [
     Vue({
       include: [/\.vue$/]

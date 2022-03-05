@@ -29,5 +29,6 @@ const handleRegister = async () => {
 			<br />
 			<button @click="handleRegister">Register</button>
 		</div>
+		<Footer />
 	</div>
 </template>

@@ -2,10 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/public/favicon.ico" />
+    <link rel="icon" href="/favicon.ico" />
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <style>
+      @font-face {
+        font-family: "CenturyGothic";
+        src:  url("/~/century-gothic/CenturyGothic.ttf") format("truetype"),
+              url("/~/century-gothic/CenturyGothic.woff") format("woff");
+      }
+      a {
+        text-decoration: none;
+      }
+      * {
+        font-family: "CenturyGothic";
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>

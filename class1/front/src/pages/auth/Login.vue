@@ -26,5 +26,6 @@ const handleLogin = async () => {
 			<br />
 			<button @click="handleLogin">Login</button>
 		</div>
+		<Footer />
 	</div>
 </template>

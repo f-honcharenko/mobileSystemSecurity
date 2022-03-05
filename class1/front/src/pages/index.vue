@@ -37,5 +37,6 @@ onBeforeMount(() => {
 				>
 			</div>
 		</div>
+		<Footer />
 	</div>
 </template>
