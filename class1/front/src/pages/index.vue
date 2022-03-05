@@ -4,20 +4,25 @@ meta:
 </route>
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 
 import useNotyf from "../composable/useNotyf";
 
 const notyf = useNotyf();
-
+const router = useRouter();
 const isLogged = ref(true);
 const notesList = ref([
-	{ id: 1, title: "Title 1", date: "11.01.2003" },
+	{ id: 1, title: "Title 1sdfsdfsdfsdf", date: "11.01.2003" },
 	{ id: 2, title: "Title 2", date: "11.01.2003" },
-	{ id: 3, title: "Title 3", date: "11.01.2003" },
-	{ id: 4, title: "Title 4", date: "11.01.2003" },
-	{ id: 5, title: "Title 5", date: "11.01.2003" },
-	{ id: 6, title: "Title 6", date: "11.01.2003" },
-	{ id: 7, title: "Title 7", date: "11.01.2003" },
+	{
+		id: 3,
+		title: "Title 3sdfsdfsdfsdfsdf sdfsfsdfsdf sdf",
+		date: "11.01.2003",
+	},
+	{ id: 4, title: "Title 4sdfsdfdsf", date: "11.01.2003" },
+	{ id: 5, title: "Title 5sdfsdfsf", date: "11.01.2003" },
+	{ id: 6, title: "Title 6sdf", date: "11.01.2003" },
+	{ id: 7, title: "Title 7sdfsdfsdfdsf sdfsdfsdf sdf", date: "11.01.2003" },
 	{ id: 8, title: "Title 8", date: "11.01.2003" },
 ]);
 
@@ -39,7 +44,7 @@ const handleChangePassword = async () => {
 };
 const handleCreateNote = async () => {
 	try {
-		notyf.success("Successfully created.");
+		router.push({ path: "/note/create/" });
 	} catch (error) {
 		notyf.error("Error.");
 	}
@@ -51,21 +56,8 @@ onBeforeMount(() => {
 </script>
 <template>
 	<div>
-		<Header />
 		<div v-if="isLogged" id="notes">
-			Hello, {{ "login" }}<br />
-			<button @click="handleChangePassword">change password</button>
-			<hr />
 			<h2>Notes:</h2>
-			<!-- <ul>
-				<li class="note" v-for="note in notesList" :key="note.id">
-					<div id="removeBtn" @click="handleDeleteNote(note.id)">&#9746;</div>
-					<router-link class="note" :to="{ path: '/note/' + note.id }">
-						<b>[{{ note.date }}]<br />&emsp; {{ note.title }}</b>
-					</router-link>
-					<hr />
-				</li>
-			</ul> -->
 			<div class="masonry">
 				<Card
 					v-for="note in notesList"
@@ -75,7 +67,7 @@ onBeforeMount(() => {
 					:_id="note.id"
 				/>
 			</div>
-			<div class="crt-btn">+</div>
+			<div class="crt-btn" @click="handleCreateNote">+</div>
 		</div>
 		<div v-else id="welcome-message">
 			<div>
@@ -91,7 +83,6 @@ onBeforeMount(() => {
 				>
 			</div>
 		</div>
-		<!-- <Footer /> -->
 	</div>
 </template>
 <style>
