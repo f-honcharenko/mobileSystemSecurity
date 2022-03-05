@@ -37,6 +37,13 @@ const handleChangePassword = async () => {
 		alert("Change password");
 	} catch (error) {}
 };
+const handleCreateNote = async () => {
+	try {
+		notyf.success("Successfully created.");
+	} catch (error) {
+		notyf.error("Error.");
+	}
+};
 
 onBeforeMount(() => {
 	fetchUserData();
@@ -49,8 +56,8 @@ onBeforeMount(() => {
 			Hello, {{ "login" }}<br />
 			<button @click="handleChangePassword">change password</button>
 			<hr />
-			<h2>Here is your notes:</h2>
-			<ul>
+			<h2>Notes:</h2>
+			<!-- <ul>
 				<li class="note" v-for="note in notesList" :key="note.id">
 					<div id="removeBtn" @click="handleDeleteNote(note.id)">&#9746;</div>
 					<router-link class="note" :to="{ path: '/note/' + note.id }">
@@ -58,7 +65,17 @@ onBeforeMount(() => {
 					</router-link>
 					<hr />
 				</li>
-			</ul>
+			</ul> -->
+			<div class="masonry">
+				<Card
+					v-for="note in notesList"
+					:key="note.id"
+					:title="note.title"
+					:date="note.date"
+					:_id="note.id"
+				/>
+			</div>
+			<div class="crt-btn">+</div>
 		</div>
 		<div v-else id="welcome-message">
 			<div>
@@ -74,7 +91,7 @@ onBeforeMount(() => {
 				>
 			</div>
 		</div>
-		<Footer />
+		<!-- <Footer /> -->
 	</div>
 </template>
 <style>
@@ -85,5 +102,23 @@ onBeforeMount(() => {
 .note {
 	color: black;
 	cursor: pointer;
+}
+.crt-btn {
+	width: 40px;
+	height: 40px;
+	background-color: darkblue;
+	position: fixed;
+	right: 20px;
+	bottom: 10px;
+	color: white;
+	font-weight: 900;
+	border-radius: 90pt;
+	text-align: center;
+	transform: translateY(-50%);
+}
+.masonry {
+	/* Masonry container */
+	column-count: 2;
+	column-gap: 5px;
 }
 </style>
