@@ -18,10 +18,10 @@ const handleLogin = async () => {
 		<title>[SN] Login</title>
 		<Header />
 		<div>
-			<label for="lgn-input-login">Login:</label>
+			<label for="lgn-input-login">Login:&emsp; </label>
 			<input type="text" id="lgn-input-login" />
 			<br />
-			<label for="lgn-input-password">Password:</label>
+			<label for="lgn-input-password">Password:&emsp; </label>
 			<input type="text" id="lgn-input-password" />
 			<br />
 			<button @click="handleLogin">Login</button>

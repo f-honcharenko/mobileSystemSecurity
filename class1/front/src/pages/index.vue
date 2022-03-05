@@ -6,10 +6,30 @@ meta:
 import { ref } from "vue";
 import { onBeforeMount } from "@vue/runtime-core";
 
-const isLogged = ref(false);
+const isLogged = ref(true);
+const notesList = ref([
+	{ id: 1, title: "Title 1", date: "11.01.2003" },
+	{ id: 2, title: "Title 2", date: "11.01.2003" },
+	{ id: 3, title: "Title 3", date: "11.01.2003" },
+	{ id: 4, title: "Title 4", date: "11.01.2003" },
+	{ id: 5, title: "Title 5", date: "11.01.2003" },
+	{ id: 6, title: "Title 6", date: "11.01.2003" },
+	{ id: 7, title: "Title 7", date: "11.01.2003" },
+	{ id: 8, title: "Title 8", date: "11.01.2003" },
+]);
 
 const fetchUserData = async () => {
 	try {
+	} catch (error) {}
+};
+const handleDeleteNote = async (id: number) => {
+	try {
+		alert("Delete note");
+	} catch (error) {}
+};
+const handleChangePassword = async () => {
+	try {
+		alert("Change password");
 	} catch (error) {}
 };
 
@@ -21,7 +41,19 @@ onBeforeMount(() => {
 	<div>
 		<Header />
 		<div v-if="isLogged" id="notes">
+			Hello, {{ "login" }}<br />
+			<button @click="handleChangePassword">change password</button>
+			<hr />
 			<h2>Here is your notes:</h2>
+			<ul>
+				<li class="note" v-for="note in notesList" :key="note.id">
+					<div id="removeBtn" @click="handleDeleteNote(note.id)">&#9746;</div>
+					<router-link class="note" :to="{ path: '/note/' + note.id }">
+						<b>[{{ note.date }}]<br />&emsp; {{ note.title }}</b>
+					</router-link>
+					<hr />
+				</li>
+			</ul>
 		</div>
 		<div v-else id="welcome-message">
 			<div>
@@ -40,3 +72,13 @@ onBeforeMount(() => {
 		<Footer />
 	</div>
 </template>
+<style>
+#removeBtn {
+	float: right;
+	cursor: pointer;
+}
+.note {
+	color: black;
+	cursor: pointer;
+}
+</style>
