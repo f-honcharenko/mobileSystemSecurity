@@ -3,8 +3,11 @@ meta:
   title: "Main Page"
 </route>
 <script setup lang="ts">
-import { ref } from "vue";
-import { onBeforeMount } from "@vue/runtime-core";
+import { ref, onBeforeMount } from "vue";
+
+import useNotyf from "../composable/useNotyf";
+
+const notyf = useNotyf();
 
 const isLogged = ref(true);
 const notesList = ref([
@@ -24,7 +27,9 @@ const fetchUserData = async () => {
 };
 const handleDeleteNote = async (id: number) => {
 	try {
-		alert("Delete note");
+		notyf.success("Hello", 2000);
+
+		// alert("Delete note");
 	} catch (error) {}
 };
 const handleChangePassword = async () => {
