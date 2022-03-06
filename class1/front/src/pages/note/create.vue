@@ -14,11 +14,12 @@ const notyf = useNotyf();
 const noteID = ref(Number(route.params.id) || 0);
 const noteDate = ref({});
 
-const handleSaveNote = async () => {
+const handleCreateNote = async () => {
 	try {
-		alert("SaveNote");
+		notyf.success("Successfully created");
+		router.push({ path: `/note/${noteID.value}` });
 	} catch (error) {
-		alert("Error");
+		alert("Error while creating note");
 	}
 };
 const handleBack = () => {
@@ -29,7 +30,7 @@ const handleBack = () => {
 	<div>
 		<div class="header">
 			<div class="back-btn btn" @click="handleBack">ᐸ</div>
-			<div class="save-btn btn" @click="handleSaveNote">Save</div>
+			<div class="save-btn btn" @click="handleCreateNote">Create</div>
 		</div>
 		<br />
 		<br />

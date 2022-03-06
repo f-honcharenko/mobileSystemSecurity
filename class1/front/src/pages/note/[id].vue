@@ -86,10 +86,12 @@ onBeforeMount(() => {
 .edit-btn {
 	float: right;
 }
-
+.content-div {
+	text-align: justify;
+}
 ._div {
 	color: #fefefe;
-	margin: 0px 0px 20px 40px;
+	margin: 0px 40px 20px 40px;
 }
 .title-div {
 	font-weight: bold;

@@ -67,7 +67,9 @@ onBeforeMount(() => {
 					:_id="note.id"
 				/>
 			</div>
-			<div class="crt-btn" @click="handleCreateNote">+</div>
+			<div class="crt-btn" @click="handleCreateNote">
+				<div class="crt-btn-content">+</div>
+			</div>
 		</div>
 		<div v-else id="welcome-message">
 			<div>
@@ -105,7 +107,13 @@ onBeforeMount(() => {
 	font-weight: 900;
 	border-radius: 90pt;
 	text-align: center;
-	transform: translateY(-50%);
+}
+.crt-btn-content {
+	margin: 0;
+	position: absolute; /* 2 */
+	top: 46%; /* 3 */
+	right: 50%; /* 3 */
+	transform: translate(+50%, -50%); /* 4 */
 }
 .masonry {
 	/* Masonry container */
