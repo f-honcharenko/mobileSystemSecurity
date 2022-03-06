@@ -30,7 +30,11 @@ const handleBack = () => {
 		</div>
 		<div>
 			<input type="text" class="login-input inp" placeholder="Login" /><br />
-			<input type="text" class="password-input inp" placeholder="Password" />
+			<input
+				type="text"
+				class="password-input inp"
+				placeholder="Password"
+			/><br />
 			<input
 				type="text"
 				class="password-input inp"

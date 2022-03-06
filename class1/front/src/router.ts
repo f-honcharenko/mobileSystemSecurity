@@ -4,6 +4,7 @@ import {
 } from 'vue-router'
 
 import routes from '~pages'
+// const routes = require('pages-generated');
 
 export function createRouter() {
     const router = createClientRouter({
