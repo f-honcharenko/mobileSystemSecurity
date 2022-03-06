@@ -50,6 +50,9 @@ const handleCreateNote = async () => {
 	}
 };
 
+const handleProfile = () => {
+	router.push({ path: `/auth/profile/` });
+};
 onBeforeMount(() => {
 	fetchUserData();
 });
@@ -57,7 +60,10 @@ onBeforeMount(() => {
 <template>
 	<div>
 		<div v-if="isLogged" id="notes">
-			<h2>Notes:</h2>
+			<div>
+				<h1 class="welcome-title-div">Notes:</h1>
+				<div class="profile-btn btn" @click="handleProfile">Profile</div>
+			</div>
 			<div class="masonry">
 				<Card
 					v-for="note in notesList"
@@ -119,5 +125,20 @@ onBeforeMount(() => {
 	/* Masonry container */
 	column-count: 2;
 	column-gap: 5px;
+}
+.btn {
+	border-radius: 4pt;
+	background-color: #3b3b3b;
+	padding: 10px 15px 10px 15px;
+	margin: 20px;
+	font-weight: bold;
+}
+.profile-btn {
+	float: right;
+}
+.welcome-title-div {
+	/* font-weight: bold; */
+	float: left;
+	margin: 20px;
 }
 </style>
