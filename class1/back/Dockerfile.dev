@@ -1,0 +1,14 @@
+FROM node:14-alpine
+
+WORKDIR /usr/src/app/
+
+RUN apk add --no-cache build-base gcc autoconf automake libtool zlib-dev libpng-dev nasm
+
+COPY package.json ./
+
+RUN npm install && npm audit fix
+ENV NODE_PATH=/usr/src/app/node_modules
+
+COPY . .
+
+CMD ["npm","run","dev"]
