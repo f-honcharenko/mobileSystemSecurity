@@ -10,7 +10,8 @@ import useNotyf from "../composable/useNotyf";
 
 const notyf = useNotyf();
 const router = useRouter();
-const isLogged = ref(true);
+
+const isLogged = ref(false);
 const notesList = ref([
 	{ id: 1, title: "Title 1sdfsdfsdfsdf", date: "11.01.2003" },
 	{ id: 2, title: "Title 2", date: "11.01.2003" },
@@ -30,18 +31,6 @@ const fetchUserData = async () => {
 	try {
 	} catch (error) {}
 };
-const handleDeleteNote = async (id: number) => {
-	try {
-		notyf.success("Hello", 2000);
-
-		// alert("Delete note");
-	} catch (error) {}
-};
-const handleChangePassword = async () => {
-	try {
-		alert("Change password");
-	} catch (error) {}
-};
 const handleCreateNote = async () => {
 	try {
 		router.push({ path: "/note/create/" });
@@ -50,6 +39,12 @@ const handleCreateNote = async () => {
 	}
 };
 
+const handleLogin = () => {
+	router.push({ path: `/auth/login/` });
+};
+const handleRegister = () => {
+	router.push({ path: `/auth/register/` });
+};
 const handleProfile = () => {
 	router.push({ path: `/auth/profile/` });
 };
@@ -82,13 +77,8 @@ onBeforeMount(() => {
 				<h2>Please log in to access your notes.</h2>
 			</div>
 			<div>
-				<router-link :to="{ path: '/auth/login/' }">
-					<button>Login</button></router-link
-				><br />
-
-				<router-link :to="{ path: '/auth/register/' }">
-					<button>Register</button></router-link
-				>
+				<div class="btn" @click="handleLogin">Login</div>
+				<div class="btn" @click="handleRegister">Register</div>
 			</div>
 		</div>
 	</div>
