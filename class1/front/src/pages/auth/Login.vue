@@ -17,11 +17,12 @@ const userData = ref<UserModel>(new UserModel());
 
 const handleLogin = async () => {
 	try {
-		console.log("test1");
 		const data = await authService.login(userData.value);
 		notyf.success("Successfully loged", 2000);
+		console.log("USER", data);
 		handleBack();
 	} catch (error) {
+		console.log(error);
 		notyf.error("Error while login", 2000);
 	}
 };
@@ -35,8 +36,18 @@ const handleBack = () => {
 			<div class="back-btn btn" @click="handleBack">ᐸ</div>
 		</div>
 		<div>
-			<input type="text" class="login-input inp" placeholder="Login" /><br />
-			<input type="text" class="password-input inp" placeholder="Password" />
+			<input
+				type="text"
+				class="login-input inp"
+				placeholder="Login"
+				v-model="userData.login"
+			/><br />
+			<input
+				type="text"
+				class="password-input inp"
+				placeholder="Password"
+				v-model="userData.password"
+			/>
 		</div>
 		<div>
 			<div class="btn login-btn" @click="handleLogin">Login</div>

@@ -4,6 +4,7 @@ export interface UserModel {
     login: string;
     password: string;
     createdAt?: Date;
+    token?: String;
 }
 const schema = new Schema<UserModel>({
     login: { type: String, unique: true, required: true, },

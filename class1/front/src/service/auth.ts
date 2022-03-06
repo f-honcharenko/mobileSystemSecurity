@@ -6,7 +6,8 @@ export class UserModel extends ApiModel {
         const fields: Array<string> = [
             "login",
             "password",
-            "token"
+            "token",
+            "createdAt"
         ]
         super(fields)
     }
@@ -15,18 +16,19 @@ export class UserModel extends ApiModel {
 
 export class AuthService extends Service<UserModel> {
     constructor() {
-        super('/frontend/', new UserModel(), api)
+        super('/', new UserModel(), api)
     }
 
     public async login(user: UserModel): Promise<Object> {
         console.log("[SERVICE] login");
         try {
-            const { data } = await this._api.post(`/token/`,{"login":user.apiData().login,"password":user.apiData().password})
-            this._session.access_token = data.access
-            this._session.refresh_token = data.refresh
+            const { data } = await this._api.post(`/user/login/`,{"login":user.apiData().login,"password":user.apiData().password})
+            this._session.access_token = data.token;
+            // this._session.refresh_token = data.refresh
             this._session.access_token_timestamp = (new Date()).getTime()
-            const userData = await this.get();
-            return Promise.resolve(this.parseData(userData))
+            this._session.isLoggedIn = true;
+            this._session.user = JSON.stringify(data.user);
+            return Promise.resolve(this.parseData(data.user))
         } catch (error:any) {
             if(error.response)
                 return Promise.reject(error.response)
@@ -39,7 +41,7 @@ export class AuthService extends Service<UserModel> {
             const { data } = await this._api.post(`/frontend/register/`,{"login":user.apiData().login,"password":user.apiData().password})
             this._session.user= data.user
             this._session.access_token = data.tokens.access
-            this._session.refresh_token = data.tokens.refresh
+            // this._session.refresh_token = data.tokens.refresh
             this._session.access_token_timestamp = (new Date()).getTime()
             
             const userData = await this.get();
@@ -53,9 +55,10 @@ export class AuthService extends Service<UserModel> {
     public async get():Promise<UserModel> { 
         console.log("[SERVICE] get");
         try { 
-            const { data } = await this._api.get(`/frontend/user/?t=${(new Date()).getTime()}`)
-            this._session.user = data;
-            return Promise.resolve(data)
+            // const { data } = await this._api.get(`/frontend/user/?t=${(new Date()).getTime()}`)
+            // this._session.user = data;
+            // return Promise.resolve(data)
+            return Promise.resolve(new UserModel())
         } catch (error:any) { 
             if(error.response && error.response.status === 401){
                 this.logout()
@@ -65,22 +68,11 @@ export class AuthService extends Service<UserModel> {
             return Promise.reject(error)
         }  
     }
-    public async edit (user: UserData):Promise<Object> {
-        console.log("[SERVICE] edit");
-        try {
-            const { data } = await this._api.put(`/frontend/user/${this._session.user.id}/`, user);
-            
-            return Promise.resolve(data)
-        } catch (error:any) {
-            if(error.response)
-                return Promise.reject(error.response)
-            return Promise.reject(error)
-        }
-    }
+
     public async logout() { 
         console.log("[SERVICE] logout");
         this._session.access_token = ''
-        this._session.refresh_token = ''
+        this._session.isLoggedIn = false;
         this._session.user = {} 
     }
 }

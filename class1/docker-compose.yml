@@ -1,7 +1,21 @@
 version: '3.8'
 
 services:
-    
+    back:
+      container_name: noteSecure-back
+      build:
+          context: back/
+          dockerfile: Dockerfile.dev
+      volumes:
+      - ./back/:/usr/src/app/
+      - /usr/src/app/node_modules/
+      ports:
+      - 8000:8000
+      environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      stdin_open: true
+
     front:
       container_name: noteSecure-front
       build:
