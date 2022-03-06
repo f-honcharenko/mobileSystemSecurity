@@ -12,12 +12,15 @@ import { RouterView } from 'vue-router'
 
 import { createRouter } from './router'
 
+import { session, api } from './composable/useApi'
 type AppOptions = {
   enhanceApp?: (app: App) => Promise<void>
 }
 
 export async function createApp({ enhanceApp }: AppOptions) {
 	const router = createRouter();
+	const _session = session;
+	const _api = api;
 
 	const app = createClientApp({
 		setup() {

@@ -6,13 +6,19 @@ meta:
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-import useNotyf from "../../composable/useNotyf";
+import useNotyf from "/@src/composable/useNotyf";
+import { AuthService, UserModel } from "/@src/service/auth";
+// import { UserModel } from "/@src/service/auth";
 
 const router = useRouter();
 const notyf = useNotyf();
+const authService = new AuthService();
+const userData = ref<UserModel>(new UserModel());
 
 const handleLogin = async () => {
 	try {
+		console.log("test1");
+		const data = await authService.login(userData.value);
 		notyf.success("Successfully loged", 2000);
 		handleBack();
 	} catch (error) {

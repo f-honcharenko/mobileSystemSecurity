@@ -12,7 +12,14 @@ export default defineConfig({
 	base: '/',
 	publicDir: 'public',
 	logLevel: SILENT ? 'error' : 'info',
-
+  server: {
+    proxy: {
+      '/api/': {
+        target: 'http://127.0.0.1:5000/',
+      }
+    }
+  },
+    
   resolve: {
     alias: [
       {
