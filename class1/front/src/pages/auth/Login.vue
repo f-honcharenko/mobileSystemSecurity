@@ -53,4 +53,11 @@ const handleBack = () => {
 .back-btn {
 	float: left;
 }
+.btn {
+	border-radius: 4pt;
+	background-color: #3b3b3b;
+	padding: 10px 15px 10px 15px;
+	margin: 20px;
+	font-weight: bold;
+}
 </style>
