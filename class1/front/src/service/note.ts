@@ -20,9 +20,9 @@ export class NoteService extends Service<NoteModel> {
         super('/', new NoteModel(), api)
     }
     public async create(instance: NoteModel): Promise<NoteModel> {
-        try { 
-            const data = await this._api.post('/note/create', {title:instance.apiData().title, content:instance.apiData().content})
-            return Promise.resolve(this.parseData(data));
+        try {
+            const {data} = await this._api.post('/note/create', {title:instance.apiData().title, content:instance.apiData().content})
+            return Promise.resolve(data);
         } catch (error) {
             return Promise.reject(error)
         }

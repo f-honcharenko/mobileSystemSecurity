@@ -38,13 +38,12 @@ const goToNote = (id: string) => {
 		>
 			{{ props.title }}<br /><br />
 			<div class="item-date">{{ new Date(props.date).toDateString() }}</div>
-			<br />
-			<div class="item-date">1{{ props._id }}</div>
 		</div>
 	</div>
 </template>
 <style scoped>
 .item {
+	word-wrap: break-word;
 	/* Masonry bricks or child elements */
 	background-color: #eee;
 	display: inline-block;

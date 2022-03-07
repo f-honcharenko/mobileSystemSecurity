@@ -87,6 +87,9 @@ onBeforeMount(() => {
 	float: right;
 	cursor: pointer;
 }
+#notes {
+	overflow-y: visible !important;
+}
 .note {
 	color: black;
 	cursor: pointer;
@@ -112,6 +115,7 @@ onBeforeMount(() => {
 }
 .masonry {
 	/* Masonry container */
+	overflow-y: visible !important;
 	column-count: 2;
 	column-gap: 5px;
 }

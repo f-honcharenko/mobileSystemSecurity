@@ -14,14 +14,14 @@ const notyf = useNotyf();
 
 const noteSetvice = new NoteService();
 
-const noteID = ref(Number(route.params.id) || 0);
 const noteDate = ref<NoteModel>(new NoteModel());
 
 const handleCreateNote = async () => {
 	try {
 		const data = await noteSetvice.create(noteDate.value);
 		notyf.success("Successfully created");
-		router.push({ path: `/note/${noteID.value}` });
+		console.log("DATA", data);
+		router.push({ path: `/note/${data._id}` });
 	} catch (error) {
 		alert("Error while creating note");
 	}

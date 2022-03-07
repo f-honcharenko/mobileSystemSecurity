@@ -3,18 +3,28 @@ meta:
   title: "[SN] Note"
 </route>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import useNotyf from "../../../composable/useNotyf";
+import { NoteService, NoteModel } from "/@src/service/note";
 
 const route = useRoute();
 const router = useRouter();
 const notyf = useNotyf();
+const noteService = new NoteService();
 
-const noteID = ref(Number(route.params.id) || 0);
+const noteID = ref(String(route.params.id));
 const noteDate = ref({});
 
+const loadNoteData = async (id: string) => {
+	try {
+		const data = await noteService.getNote(noteID.value);
+		noteDate.value = data;
+	} catch (error) {
+		notyf.error("Error while loading note data.");
+	}
+};
 const handleSaveNote = async () => {
 	try {
 		notyf.success("Successfully saved");
@@ -24,8 +34,12 @@ const handleSaveNote = async () => {
 	}
 };
 const handleBack = () => {
-	router.push({ path: `/note/${noteID.value}` });
+	router.push({ path: `/note/${noteID.value}/` });
 };
+
+onBeforeMount(() => {
+	loadNoteData(noteID.value);
+});
 </script>
 <template>
 	<div>
@@ -36,9 +50,15 @@ const handleBack = () => {
 		<br />
 		<br />
 		<div>
-			<textarea class="title-textarea" placeholder="Title" spellcheck="false" />
+			<textarea
+				class="title-textarea"
+				v-model="noteDate.title"
+				placeholder="Title"
+				spellcheck="false"
+			/>
 			<textarea
 				class="content-textarea"
+				v-model="noteDate.content"
 				placeholder="Type something..."
 				spellcheck="false"
 			/>
