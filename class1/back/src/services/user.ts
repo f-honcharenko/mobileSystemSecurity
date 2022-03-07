@@ -1,7 +1,6 @@
 import { UserSchema, UserModel } from "../models/User";
 import jwt from 'jsonwebtoken'
 import config from '../../config/dev'
-// import user
 
 interface ResponseError extends Error {
     status?: number;
@@ -14,7 +13,8 @@ export class UserService {
                 const user = await new UserSchema(candidate).save();
                 const userData = {
                     login: user.login,
-                    createdAt: user.createdAt
+                    createdAt: user.createdAt,
+                    id: user._id,
                 };
                 const token = await jwt.sign(userData, config.secretJWT, {})
                 return Promise.resolve({ token, user: userData });
@@ -24,7 +24,6 @@ export class UserService {
                 return Promise.reject(newError);
             }
         } catch (error) {
-            console.log(error);
             if (error.keyPattern.login) { 
                 let newError:ResponseError = new Error("User already exist");
                 newError.status = 400;
@@ -34,7 +33,7 @@ export class UserService {
             return Promise.reject(error);
         }
     }
-    public async login(candidate: UserModel): Promise<{user:UserModel, token:string}> { 
+    public async login(candidate: UserModel): Promise<Object> { 
         try {
             if (candidate.login && candidate.password && (candidate.login.length > 0) && (candidate.password.length > 0)) {
                 const user = await UserSchema.findOne({ login: candidate.login }).exec();
@@ -43,6 +42,7 @@ export class UserService {
                     const userData = {
                         login: user.login,
                         createdAt: user.createdAt,
+                        id: user._id,
                     };
                     const token = await jwt.sign(userData, config.secretJWT, {})
                     return Promise.resolve({ token, user: userData });
@@ -61,7 +61,7 @@ export class UserService {
             return Promise.reject(error);
         }
     }
-    public async token(token: String): Promise<{ user: UserModel, token: String }> { 
+    public async token(token: String): Promise<Object> { 
         try { 
             const userData = await jwt.verify(token, config.secretJWT, {});
             return Promise.resolve({ token, user: userData });
@@ -70,7 +70,7 @@ export class UserService {
             return Promise.reject(error);
         }
     }
-    public async changePassword(token: string, oldPassword:string, newPassword:string): Promise<{ user: UserModel, token: String }> {
+    public async changePassword(token: string, oldPassword:string, newPassword:string): Promise<Object> {
         try {
             const userData = await jwt.verify(token, config.secretJWT, {});
             const user = await UserSchema.findOne({ login: userData.login }).exec();

@@ -6,18 +6,22 @@ meta:
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useNotyf from "../../composable/useNotyf";
+import { NoteModel, NoteService } from "/@src/service/note";
 
 const route = useRoute();
 const router = useRouter();
 const notyf = useNotyf();
 
+const noteSetvice = new NoteService();
+
 const noteID = ref(Number(route.params.id) || 0);
-const noteDate = ref({});
+const noteDate = ref<NoteModel>(new NoteModel());
 
 const handleCreateNote = async () => {
 	try {
+		const data = await noteSetvice.create(noteDate.value);
 		notyf.success("Successfully created");
-		router.push({ path: `/note/${noteID.value}` });
+		// router.push({ path: `/note/${noteID.value}` });
 	} catch (error) {
 		alert("Error while creating note");
 	}
@@ -35,9 +39,15 @@ const handleBack = () => {
 		<br />
 		<br />
 		<div>
-			<textarea class="title-textarea" placeholder="Title" spellcheck="false" />
+			<textarea
+				class="title-textarea"
+				v-model="noteDate.state.title"
+				placeholder="Title"
+				spellcheck="false"
+			/>
 			<textarea
 				class="content-textarea"
+				v-model="noteDate.state.content"
 				placeholder="Type something..."
 				spellcheck="false"
 			/>
