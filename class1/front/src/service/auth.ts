@@ -30,22 +30,21 @@ export class AuthService extends Service<UserModel> {
             this._session.user = JSON.stringify(data.user);
             return Promise.resolve(this.parseData(data.user))
         } catch (error:any) {
-            if(error.response)
-                return Promise.reject(error.response)
+            if(error.msg)
+                return Promise.reject(error.msg)
             return Promise.reject(error)
         }
     }
     public async register(user: UserModel):Promise<Object> {
         console.log("[SERVICE] register");
         try {
-            const { data } = await this._api.post(`/frontend/register/`,{"login":user.apiData().login,"password":user.apiData().password})
+            const { data } = await this._api.post(`/user/create/`,{"login":user.apiData().login,"password":user.apiData().password})
             this._session.user= data.user
-            this._session.access_token = data.tokens.access
+            this._session.access_token = data.token
             // this._session.refresh_token = data.tokens.refresh
             this._session.access_token_timestamp = (new Date()).getTime()
             
-            const userData = await this.get();
-            return Promise.resolve(userData)
+            return Promise.resolve(data.user)
         } catch (error:any) {
             if(error.response)
                 return Promise.reject(error.response)

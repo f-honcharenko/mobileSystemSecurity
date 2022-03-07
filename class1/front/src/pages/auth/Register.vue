@@ -7,15 +7,26 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import useNotyf from "../../composable/useNotyf";
+import { AuthService, UserModel } from "/@src/service/auth";
 
 const router = useRouter();
 const notyf = useNotyf();
 
+const authService = new AuthService();
+
+const userData = ref<UserModel>(new UserModel());
+
 const handleRegister = async () => {
 	try {
-		notyf.success("Successfully registered", 2000);
-		handleBack();
+		if (userData.value.password == userData.value.passwordConf) {
+			const data = await authService.register(userData.value);
+			notyf.success("Successfully registered", 2000);
+			handleBack();
+		} else {
+			notyf.error("Passwords do not match", 2000);
+		}
 	} catch (error) {
+		console.log(error);
 		notyf.error("Error while register", 2000);
 	}
 };
@@ -29,16 +40,23 @@ const handleBack = () => {
 			<div class="back-btn btn" @click="handleBack">ᐸ</div>
 		</div>
 		<div>
-			<input type="text" class="login-input inp" placeholder="Login" /><br />
+			<input
+				type="text"
+				class="login-input inp"
+				placeholder="Login"
+				v-model="userData.login"
+			/><br />
 			<input
 				type="text"
 				class="password-input inp"
 				placeholder="Password"
+				v-model="userData.password"
 			/><br />
 			<input
 				type="text"
 				class="password-input inp"
 				placeholder="Confirm Password"
+				v-model="userData.passwordConf"
 			/>
 		</div>
 		<div>

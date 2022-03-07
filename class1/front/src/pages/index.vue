@@ -7,11 +7,13 @@ import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 
 import useNotyf from "../composable/useNotyf";
+import { useUserSession } from "../composable/useSession";
 
 const notyf = useNotyf();
 const router = useRouter();
+const session = useUserSession();
 
-const isLogged = ref(false);
+const isLogged = ref(session.isLoggedIn || false);
 const notesList = ref([
 	{ id: 1, title: "Title 1sdfsdfsdfsdf", date: "11.01.2003" },
 	{ id: 2, title: "Title 2", date: "11.01.2003" },

@@ -8,11 +8,11 @@ import { useRouter } from "vue-router";
 
 import useNotyf from "/@src/composable/useNotyf";
 import { AuthService, UserModel } from "/@src/service/auth";
-// import { UserModel } from "/@src/service/auth";
 
 const router = useRouter();
 const notyf = useNotyf();
 const authService = new AuthService();
+
 const userData = ref<UserModel>(new UserModel());
 
 const handleLogin = async () => {
@@ -21,8 +21,7 @@ const handleLogin = async () => {
 		notyf.success("Successfully loged", 2000);
 		console.log("USER", data);
 		handleBack();
-	} catch (error) {
-		console.log(error);
+	} catch (error: any) {
 		notyf.error("Error while login", 2000);
 	}
 };

@@ -13,6 +13,7 @@ import { RouterView } from 'vue-router'
 import { createRouter } from './router'
 
 import { session, api } from './composable/useApi'
+import { userSessionSymbol } from './composable/useSession'
 type AppOptions = {
   enhanceApp?: (app: App) => Promise<void>
 }
@@ -24,7 +25,8 @@ export async function createApp({ enhanceApp }: AppOptions) {
 
 	const app = createClientApp({
 		setup() {
-			
+			// rovide(apiSymbol, _api)
+			provide(userSessionSymbol, _session)
 			return () => {
 				const defaultSlot = ({ Component: _Component }: any) => {
 				  const Component = resolveDynamicComponent(_Component) as VNode
