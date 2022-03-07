@@ -34,8 +34,19 @@ const handleLogout = () => {
 		notyf.error("Error while logout");
 	}
 };
-const handleChangePassword = async (id: number) => {
+const handleChangePassword = async () => {
 	try {
+		const oldPassword = prompt("Enter your old passwrod");
+		const newPassword = prompt("Enter your new passwrod");
+		if (oldPassword && newPassword) {
+			const data = await authService.changePassword(
+				String(oldPassword),
+				String(newPassword)
+			);
+			notyf.success("Successfully changed.");
+		} else {
+			notyf.error("Incorrect data", 2000);
+		}
 	} catch (error) {
 		notyf.error("Error while loading user data.");
 	}
@@ -60,7 +71,9 @@ onBeforeMount(() => {
 				Register date: {{ new Date(userData.state.createdAt).toDateString() }}
 			</div>
 			<br />
-			<div class="chng-btn _div btn">Change password</div>
+			<div class="chng-btn _div btn" @click="handleChangePassword">
+				Change password
+			</div>
 		</div>
 		<div>
 			<div class="leave-btn btn" @click="handleLogout">Logout</div>

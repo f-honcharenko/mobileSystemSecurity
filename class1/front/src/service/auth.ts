@@ -68,6 +68,22 @@ export class AuthService extends Service<UserModel> {
             return Promise.reject(error)
         }  
     }
+    public async changePassword(newPassword:string, oldPassword:string):Promise<UserModel> { 
+        console.log("[SERVICE] changePassword");
+        try { 
+            const { data } = await this._api.post(`/user/changePassword/`, { newPassword, oldPassword})
+            this._session.user = data.user;
+            this._session.access_token = data.token;
+            return Promise.resolve(data.user)
+        } catch (error:any) { 
+            if(error.response && error.response.status === 401){
+                // this.logout()
+            }
+            if(error.response)
+                return Promise.reject(error.response)
+            return Promise.reject(error)
+        }  
+    }
     public async logout() { 
         console.log("[SERVICE] logout");
         this._session.access_token = ''

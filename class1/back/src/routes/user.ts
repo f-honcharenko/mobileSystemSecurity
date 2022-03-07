@@ -1,3 +1,4 @@
+import e from 'express';
 import express from 'express';
 import { UserService } from '../services/user';
 
@@ -32,8 +33,19 @@ user.get('/token', async (req, res, next) => {
     try {
         const token = req.headers.authorization.slice(7);
         const data = await userService.token(token);
-        console.log('token',token);
-        console.log('data',data);
+        return next(Promise.resolve({ data, status: 200 }));
+    } catch (error) {
+        return next(error)
+    } 
+});
+
+user.post('/changePassword', async (req, res, next) => {
+    try {
+        const token = req.headers.authorization.slice(7);
+        const newPassword = req.body.newPassword;
+        const oldPassword = req.body.oldPassword;
+        const data = await userService.changePassword(token,newPassword,oldPassword);
+
         return next(Promise.resolve({ data, status: 200 }));
     } catch (error) {
         return next(error)

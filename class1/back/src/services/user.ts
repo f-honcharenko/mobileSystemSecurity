@@ -64,13 +64,34 @@ export class UserService {
     public async token(token: String): Promise<{ user: UserModel, token: String }> { 
         try { 
             const userData = await jwt.verify(token, config.secretJWT, {});
-            console.log(userData);
-                return Promise.resolve({ token, user: userData });
-
-
+            return Promise.resolve({ token, user: userData });
         } catch (error) { 
-
+            error.status = 500;
+            return Promise.reject(error);
         }
     }
-    // public async changePassword(candidate: UserModel): Promise<{user:UserModel, token:string}> { }
+    public async changePassword(token: string, oldPassword:string, newPassword:string): Promise<{ user: UserModel, token: String }> {
+        try {
+            const userData = await jwt.verify(token, config.secretJWT, {});
+            const user = await UserSchema.findOne({ login: userData.login }).exec();
+            if (user.password == oldPassword) {
+                if (newPassword.length > 0) {
+                    user.password = newPassword;
+                    const newUser = await user.save();
+                    return Promise.resolve({ token, user: userData });
+                } else { 
+                    let newError:ResponseError = new Error("Incorrect new password");
+                    newError.status = 400;
+                    return Promise.reject(newError);
+                }
+            } else { 
+                let newError:ResponseError = new Error("Passwords do not match");
+                newError.status = 400;
+                return Promise.reject(newError);
+            }
+        } catch (error) { 
+            error.status = 500;
+            return Promise.reject(error);
+        }
+    }
 }
