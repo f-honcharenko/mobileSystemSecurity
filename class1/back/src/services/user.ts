@@ -8,7 +8,7 @@ interface ResponseError extends Error {
 }
 
 export class UserService { 
-    public async create(candidate:UserModel):Promise<Object> {
+    public async create(candidate:UserModel):Promise<{user:UserModel, token:string}> {
         try {
             if (candidate.login && candidate.password && (candidate.login.length > 0) && (candidate.password.length > 0)) {
                 const user = await new UserSchema(candidate).save();
@@ -17,7 +17,7 @@ export class UserService {
                     createdAt: user.createdAt
                 };
                 const token = await jwt.sign(userData, config.secretJWT, {})
-                return Promise.resolve({token, user:userData});
+                return Promise.resolve({ token, user: userData });
             } else { 
                 let newError:ResponseError = new Error("Incorrect data");
                 newError.status = 400;
@@ -34,7 +34,7 @@ export class UserService {
             return Promise.reject(error);
         }
     }
-    public async login(candidate: UserModel): Promise<Object> { 
+    public async login(candidate: UserModel): Promise<{user:UserModel, token:string}> { 
         try {
             if (candidate.login && candidate.password && (candidate.login.length > 0) && (candidate.password.length > 0)) {
                 const user = await UserSchema.findOne({ login: candidate.login }).exec();
@@ -61,5 +61,16 @@ export class UserService {
             return Promise.reject(error);
         }
     }
-    // public async changePassword(candidate: UserModel): Promise<Object> { }
+    public async token(token: String): Promise<{ user: UserModel, token: String }> { 
+        try { 
+            const userData = await jwt.verify(token, config.secretJWT, {});
+            console.log(userData);
+                return Promise.resolve({ token, user: userData });
+
+
+        } catch (error) { 
+
+        }
+    }
+    // public async changePassword(candidate: UserModel): Promise<{user:UserModel, token:string}> { }
 }

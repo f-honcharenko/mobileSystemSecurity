@@ -15,7 +15,7 @@ export function initApi(session: UserSessionData) {
   
     api.interceptors.request.use(async (config:any) => {
       try {
-        const access_token = await fetchAccessToken();
+        const access_token = session.access_token;
         config.headers.common.Authorization  = `Bearer ${access_token}`;  
 
         if (config.params == undefined) { 
@@ -46,30 +46,6 @@ export function initApi(session: UserSessionData) {
         }
     })
     
-    const fetchAccessToken = async(): Promise<string>=> {    
-      const current_timestamp = (new Date()).getTime()
-      const access_timestamp = session.access_token_timestamp;
-
-      // if token lifetime < 5 min
-      if (Math.abs((current_timestamp - Number(access_timestamp)) / 1000) < 5*60) {
-        return Promise.resolve(session.access_token)
-      }
-      
-      if (Boolean(session.refresh_token)) { 
-        try {
-          const response = await axios.post(
-              `${import.meta.env.VITE_API_ROOT}/api/token/refresh/`,
-              { "refresh": session.refresh_token })
-          session.access_token = response.data.access
-          session.access_token_timestamp = (new Date()).getTime()
-          return Promise.resolve(session.access_token)
-        } catch (error:any) {
-            console.log("[useAPI] fetchAT error");
-            // document.location.href = '/logout'
-        }
-      }
-      return Promise.resolve("TOKEN")
-    }
 
     return api
 }

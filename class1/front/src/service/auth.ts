@@ -41,6 +41,7 @@ export class AuthService extends Service<UserModel> {
             const { data } = await this._api.post(`/user/create/`,{"login":user.apiData().login,"password":user.apiData().password})
             this._session.user= data.user
             this._session.access_token = data.token
+            this._session.isLoggedIn = true;
             // this._session.refresh_token = data.tokens.refresh
             this._session.access_token_timestamp = (new Date()).getTime()
             
@@ -54,20 +55,19 @@ export class AuthService extends Service<UserModel> {
     public async get():Promise<UserModel> { 
         console.log("[SERVICE] get");
         try { 
-            // const { data } = await this._api.get(`/frontend/user/?t=${(new Date()).getTime()}`)
-            // this._session.user = data;
-            // return Promise.resolve(data)
-            return Promise.resolve(new UserModel())
+            const { data } = await this._api.get(`/user/token/`)
+            this._session.user = data.user;
+            this._session.access_token = data.token;
+            return Promise.resolve(data.user)
         } catch (error:any) { 
             if(error.response && error.response.status === 401){
-                this.logout()
+                // this.logout()
             }
             if(error.response)
                 return Promise.reject(error.response)
             return Promise.reject(error)
         }  
     }
-
     public async logout() { 
         console.log("[SERVICE] logout");
         this._session.access_token = ''

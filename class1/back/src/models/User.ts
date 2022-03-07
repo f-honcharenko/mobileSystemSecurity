@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 
 export interface UserModel {
     login: string;
-    password: string;
+    password?: string;
     createdAt?: Date;
     token?: String;
 }
