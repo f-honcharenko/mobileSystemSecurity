@@ -52,4 +52,23 @@ export class NoteService {
             return Promise.reject(error);
         }
     }
+    public async update(token: string, id:string, instance:NoteModel): Promise<NoteModel> { 
+        try { 
+            const userData = await jwt.verify(token, config.secretJWT, {});
+            const note = await NoteSchema.findById(id);
+            if (note.creator == userData.id) { 
+                note.title = instance.title;
+                note.content = instance.content;
+                const newNote = await note.save();
+                return Promise.resolve(newNote)
+            } else {
+                let newError:ResponseError = new Error("Not found");
+                newError.status = 404;
+                return Promise.reject(newError);
+            }
+        } catch (error) {
+            error.status = 500;
+            return Promise.reject(error);
+        }
+    }
 }

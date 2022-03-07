@@ -15,7 +15,7 @@ const notyf = useNotyf();
 const noteService = new NoteService();
 
 const noteID = ref(String(route.params.id));
-const noteDate = ref({});
+const noteDate = ref<NoteModel>(new NoteModel());
 
 const loadNoteData = async (id: string) => {
 	try {
@@ -27,6 +27,7 @@ const loadNoteData = async (id: string) => {
 };
 const handleSaveNote = async () => {
 	try {
+		const data = await noteService.update(noteDate.value);
 		notyf.success("Successfully saved");
 		handleBack();
 	} catch (error) {

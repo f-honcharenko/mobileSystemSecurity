@@ -50,4 +50,12 @@ export class NoteService extends Service<NoteModel> {
             return Promise.reject(error)
         }  
     }
+    public async update(instance: NoteModel): Promise<NoteModel> {
+        try { 
+            const data = await this._api.post(`/note/update/${instance._id}/`, {title:instance.title, content:instance.contnent})
+            return Promise.resolve(data.data);
+        } catch (error) {
+            return Promise.reject(error)
+        }
+    }
 }

@@ -11,4 +11,4 @@ ENV NODE_PATH=/usr/src/app/node_modules
 
 COPY . .
 
-CMD ["npm","run","dev"]
+CMD ["npm","run","startTs"]

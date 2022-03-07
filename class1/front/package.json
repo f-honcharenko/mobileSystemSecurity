@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vuildVite": "vite build"
   },
   "dependencies": {
     "@vueuse/core": "^7.7.1",

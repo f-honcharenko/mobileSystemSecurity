@@ -41,5 +41,20 @@ note.get('/:id/', async (req, res, next) => {
     } 
 });
 
+note.post('/update/:id/', async (req, res, next) => {
+    try {
+        const token = req.headers.authorization.slice(7);
+        const id = req.params.id;
+        const title = req.body.title;
+        const content = req.body.content;
+        
+        const data = await noteService.update(token, id, {title, content});
+
+        return next(Promise.resolve({ data, status: 200 }));
+    } catch (error) {
+        return next(error)
+    } 
+});
+
 
 export default note;
