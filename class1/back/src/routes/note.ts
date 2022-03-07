@@ -17,5 +17,29 @@ note.post('/create', async (req, res, next) => {
     } 
 });
 
+note.get('/list', async (req, res, next) => {
+    try {
+        const token = req.headers.authorization.slice(7);
+        const data = await noteService.list(token);
+
+        return next(Promise.resolve({ data, status: 200 }));
+    } catch (error) {
+        return next(error)
+    } 
+});
+
+note.get('/:id/', async (req, res, next) => {
+    try {
+        const token = req.headers.authorization.slice(7);
+        const id = req.params.id;
+        
+        const data = await noteService.get(token, id);
+
+        return next(Promise.resolve({ data, status: 200 }));
+    } catch (error) {
+        return next(error)
+    } 
+});
+
 
 export default note;

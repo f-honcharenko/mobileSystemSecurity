@@ -8,30 +8,25 @@ import { useRouter } from "vue-router";
 
 import useNotyf from "../composable/useNotyf";
 import { useUserSession } from "../composable/useSession";
+import { NoteService, NoteModel } from "../service/note";
 
 const notyf = useNotyf();
 const router = useRouter();
 const session = useUserSession();
 
-const isLogged = ref(session.isLoggedIn || false);
-const notesList = ref([
-	{ id: 1, title: "Title 1sdfsdfsdfsdf", date: "11.01.2003" },
-	{ id: 2, title: "Title 2", date: "11.01.2003" },
-	{
-		id: 3,
-		title: "Title 3sdfsdfsdfsdfsdf sdfsfsdfsdf sdf",
-		date: "11.01.2003",
-	},
-	{ id: 4, title: "Title 4sdfsdfdsf", date: "11.01.2003" },
-	{ id: 5, title: "Title 5sdfsdfsf", date: "11.01.2003" },
-	{ id: 6, title: "Title 6sdf", date: "11.01.2003" },
-	{ id: 7, title: "Title 7sdfsdfsdfdsf sdfsdfsdf sdf", date: "11.01.2003" },
-	{ id: 8, title: "Title 8", date: "11.01.2003" },
-]);
+const noteSetvice = new NoteService();
 
-const fetchUserData = async () => {
+const isLogged = ref(session.isLoggedIn || false);
+const notesList = ref<Array<NoteModel>>([]);
+
+const fetchUserNotes = async () => {
 	try {
-	} catch (error) {}
+		const data = await noteSetvice.all();
+		notesList.value = data.list;
+		console.log(data);
+	} catch (error) {
+		notyf.error("Error loading notes", 2000);
+	}
 };
 const handleCreateNote = async () => {
 	try {
@@ -51,7 +46,9 @@ const handleProfile = () => {
 	router.push({ path: `/auth/profile/` });
 };
 onBeforeMount(() => {
-	fetchUserData();
+	if (isLogged.value) {
+		fetchUserNotes();
+	}
 });
 </script>
 <template>
@@ -64,10 +61,10 @@ onBeforeMount(() => {
 			<div class="masonry">
 				<Card
 					v-for="note in notesList"
-					:key="note.id"
+					:key="note._id"
 					:title="note.title"
-					:date="note.date"
-					:_id="note.id"
+					:date="note.createdAt"
+					:_id="note._id"
 				/>
 			</div>
 			<div class="crt-btn" @click="handleCreateNote">

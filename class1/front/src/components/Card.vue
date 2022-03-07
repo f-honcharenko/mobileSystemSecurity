@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 const props = defineProps({
 	title: String,
 	date: String,
-	_id: Number,
+	_id: String,
 });
 const route = useRouter();
 
@@ -25,7 +25,7 @@ const getRandomColor = () => {
 	const max = Math.floor(colorLists.value.length);
 	return colorLists.value[Math.floor(Math.random() * (max - min)) + min]; //Максимум не включается, минимум включается
 };
-const goToNote = (id: number) => {
+const goToNote = (id: string) => {
 	route.push({ path: `/note/${id}/` });
 };
 </script>
@@ -34,10 +34,12 @@ const goToNote = (id: number) => {
 		<div
 			class="item"
 			:style="`background-color:${getRandomColor()}`"
-			@click="goToNote(Number(props._id))"
+			@click="goToNote(props._id?.toString())"
 		>
 			{{ props.title }}<br /><br />
-			<div class="item-date">{{ props.date }}</div>
+			<div class="item-date">{{ new Date(props.date).toDateString() }}</div>
+			<br />
+			<div class="item-date">1{{ props._id }}</div>
 		</div>
 	</div>
 </template>

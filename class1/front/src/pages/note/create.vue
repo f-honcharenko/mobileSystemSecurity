@@ -21,7 +21,7 @@ const handleCreateNote = async () => {
 	try {
 		const data = await noteSetvice.create(noteDate.value);
 		notyf.success("Successfully created");
-		// router.push({ path: `/note/${noteID.value}` });
+		router.push({ path: `/note/${noteID.value}` });
 	} catch (error) {
 		alert("Error while creating note");
 	}

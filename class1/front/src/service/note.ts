@@ -22,19 +22,25 @@ export class NoteService extends Service<NoteModel> {
     public async create(instance: NoteModel): Promise<NoteModel> {
         try { 
             const data = await this._api.post('/note/create', {title:instance.apiData().title, content:instance.apiData().content})
-            console.log('do pasrsinga', data);
             return Promise.resolve(this.parseData(data));
         } catch (error) {
             return Promise.reject(error)
         }
     }
-    public async get():Promise<NoteModel> { 
+
+    public async all(): Promise<{list:Array<NoteModel>, count:number}> {
+        try { 
+            const data = await this._api.get('/note/list')
+            return Promise.resolve(data.data);
+        } catch (error) {
+            return Promise.reject(error)
+        }
+    }
+    public async getNote(id:string):Promise<NoteModel> { 
         console.log("[SERVICE] get");
         try { 
-            const { data } = await this._api.get(`/user/token/`)
-            this._session.user = data.user;
-            this._session.access_token = data.token;
-            return Promise.resolve(data.user)
+            const { data } = await this._api.get(`/note/${id}/`)
+            return Promise.resolve(data)
         } catch (error:any) { 
             if(error.response && error.response.status === 401){
                 // this.logout()
