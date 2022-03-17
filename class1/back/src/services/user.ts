@@ -1,7 +1,7 @@
 import { UserSchema, UserModel } from "../models/User";
 import jwt from 'jsonwebtoken'
 import config from '../../config/dev'
-
+import {compare, hash} from '../utils/crypto'
 interface ResponseError extends Error {
     status?: number;
 }
@@ -10,6 +10,8 @@ export class UserService {
     public async create(candidate:UserModel):Promise<{user:UserModel, token:string}> {
         try {
             if (candidate.login && candidate.password && (candidate.login.length > 0) && (candidate.password.length > 0)) {
+                candidate.password = await hash(candidate.password); 
+                console.log(candidate.password)
                 const user = await new UserSchema(candidate).save();
                 const userData = {
                     login: user.login,
@@ -37,8 +39,8 @@ export class UserService {
         try {
             if (candidate.login && candidate.password && (candidate.login.length > 0) && (candidate.password.length > 0)) {
                 const user = await UserSchema.findOne({ login: candidate.login }).exec();
-
-                if (user && (user.password == candidate.password)) {
+                const isPasswordCompared = await compare(candidate.password, user.password );
+                if (user && (isPasswordCompared)) {
                     const userData = {
                         login: user.login,
                         createdAt: user.createdAt,
@@ -74,9 +76,10 @@ export class UserService {
         try {
             const userData = await jwt.verify(token, config.secretJWT, {});
             const user = await UserSchema.findOne({ login: userData.login }).exec();
-            if (user.password == oldPassword) {
+            const isPasswordCompared = await compare(oldPassword, user.password );
+            if (isPasswordCompared) {
                 if (newPassword.length > 0) {
-                    user.password = newPassword;
+                    user.password = await hash(newPassword);;
                     const newUser = await user.save();
                     return Promise.resolve({ token, user: userData });
                 } else { 
