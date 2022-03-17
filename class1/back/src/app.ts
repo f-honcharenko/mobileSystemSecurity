@@ -5,10 +5,12 @@ import cors from 'cors';
 import router from './router';
 
 import { initMongoAPI } from './composable/mongoAPI';
+import { rsaService } from './services/crypto';
+
 const app = express();
 const mongo = initMongoAPI();
 const PORT = process.env.PORT || 8000;
-
+rsaService.init();
 
 app.use(cors());
 app.use(compression());

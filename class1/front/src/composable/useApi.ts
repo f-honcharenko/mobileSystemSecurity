@@ -16,8 +16,15 @@ export function initApi(session: UserSessionData) {
     api.interceptors.request.use(async (config:any) => {
       try {
         const access_token = session.access_token;
-        config.headers.common.Authorization  = `Bearer ${access_token}`;  
-
+        config.headers.common.Authorization = `Bearer ${access_token}`;  
+        if (session.publicKey != null) { 
+          //TODO A ENCRYPT DATA
+          // config.data.publicKey = JSON.parse(session.publicKey);
+        } else {
+          session.publicKey = JSON.stringify((await axios.get(`${import.meta.env.VITE_API_ROOT}/api/crypto/publicKey`)).data.publicKey);
+          //TODO A ENCRYPT DATA
+          // config.data.publicKey = session.publicKey;
+        }
         if (config.params == undefined) { 
           config.params = {}
         } 
@@ -36,7 +43,6 @@ export function initApi(session: UserSessionData) {
         return Promise.resolve(response)
       },
       error => {
-        console.log(error)
         if (error.request && error.request.status === 500) {
           return Promise.reject(error)
         }else if(error.request && error.request.status === 401){
