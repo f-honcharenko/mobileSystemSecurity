@@ -105,3 +105,6 @@ dist
 
 #secrets
 config/dev
+
+#some shit
+.DS_Store
